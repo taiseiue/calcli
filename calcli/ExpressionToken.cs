@@ -1,0 +1,24 @@
+using sly.lexer;
+
+public enum ExpressionToken
+{
+
+    [Lexeme("[0-9]+")]
+    INT,
+
+    [Lexeme("\\+")]
+    PLUS,
+
+    [Lexeme("\\-")]
+    MINUS,
+
+    [Lexeme("\\*")]
+    TIMES,
+
+    [Lexeme("\\*")]
+    DIVIDE,
+
+    [Lexeme("[ \\t]+", isSkippable: true)]
+    WS
+
+}
