@@ -18,6 +18,12 @@ public enum ExpressionToken
     [Lexeme("\\*")]
     DIVIDE,
 
+    [Lexeme("\\(")]
+    LPAREN,
+
+    [Lexeme("\\)")]
+    RPAREN,
+
     [Lexeme("[ \\t]+", isSkippable: true)]
     WS
 

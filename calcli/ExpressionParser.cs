@@ -3,36 +3,56 @@ using sly.parser.generator;
 
 public class ExpressionParser
 {
-    [Production("expression: INT")]
-    public int intExpr(Token<ExpressionToken> intToken)
+    [Production("primary: LPAREN [d] expression RPAREN [d]")]
+    public int Group(int groupValue)
     {
-        return intToken.IntValue;
+        return groupValue;
     }
 
     [Production("expression: term PLUS expression")]
-    public int PlusExpression(int left, Token<ExpressionToken> operatorToken, int right)
-    {
-        return left + right;
-    }
     [Production("expression: term MINUS expression")]
-    public int MinusExpression(int left, Token<ExpressionToken> operatorToken, int right)
+    public int Expression(int left, Token<ExpressionToken> operatorToken, int right)
     {
-        return left - right;
-    }
-    [Production("expression: term TIMES expression")]
-    public int TimesExpression(int left, Token<ExpressionToken> operatorToken, int right)
-    {
-        return left * right;
-    }
-    [Production("expression: term DIVIDE expression")]
-    public int DivideExpression(int left, Token<ExpressionToken> operatorToken, int right)
-    {
-        return left / right;
+        var result = 0;
+
+        switch (operatorToken.TokenID)
+        {
+            case ExpressionToken.PLUS:
+                {
+                    result = left + right;
+                    break;
+                }
+            case ExpressionToken.MINUS:
+                {
+                    result = left - right;
+                    break;
+                }
+        }
+
+        return result;
     }
 
-    [Production("term: INT")]
-    public int Expression(Token<ExpressionToken> intToken)
+    [Production("expression: term")]
+    public int Expression_Term(int termValue)
     {
-        return intToken.IntValue;
+        return termValue;
+    }
+
+    [Production("term: factor")]
+    public int Term_Factor(int factorValue)
+    {
+        return factorValue;
+    }
+
+    [Production("factor: primary")]
+    public int primaryFactor(int primValue)
+    {
+        return primValue;
+    }
+
+    [Production("factor: MINUS factor")]
+    public int Factor(Token<ExpressionToken> discardedMinus, int factorValue)
+    {
+        return -factorValue;
     }
 }
