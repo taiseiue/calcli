@@ -1,11 +1,13 @@
 ﻿using sly.parser;
 using sly.parser.generator;
+using sly.parser.generator.visitor;
 
 namespace calcli;
 class Program
 {
     static void Main(string[] args)
     {
+        Console.Write(">>");
         string expression = Console.ReadLine();
 
         var Parser = GetParser();
@@ -13,7 +15,11 @@ class Program
 
         if (!r.IsError)
         {
-            Console.WriteLine($"result of <{expression}>  is {(int)r.Result}");
+            var graphviz = new GraphVizEBNFSyntaxTreeVisitor<ExpressionToken, int>();
+            var root = graphviz.VisitTree(r.SyntaxTree);
+            var graph = graphviz.Graph.Compile();
+            Console.WriteLine($"{expression} = {(int)r.Result}");
+            Console.WriteLine(graph);
         }
         else
         {
