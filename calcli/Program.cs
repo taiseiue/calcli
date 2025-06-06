@@ -1,8 +1,10 @@
 ﻿using sly.parser;
 using sly.parser.generator;
 using sly.parser.generator.visitor;
+using System.Web;
 
 namespace calcli;
+
 class Program
 {
     static void Main(string[] args)
@@ -18,8 +20,12 @@ class Program
             var graphviz = new GraphVizEBNFSyntaxTreeVisitor<ExpressionToken, int>();
             var root = graphviz.VisitTree(r.SyntaxTree);
             var graph = graphviz.Graph.Compile();
+            Console.WriteLine();
+            Console.WriteLine("Syntax Tree(Graphviz):");
+            Console.WriteLine($"https://dreampuf.github.io/GraphvizOnline/?engine=dot#{HttpUtility.UrlEncode(graph).Replace("+", "%20")}");
+            Console.WriteLine();
+            Console.WriteLine("Result:");
             Console.WriteLine($"{expression} = {(int)r.Result}");
-            Console.WriteLine(graph);
         }
         else
         {
